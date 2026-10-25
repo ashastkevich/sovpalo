@@ -1,0 +1,56 @@
+# Зависимости (pnpm)
+node_modules/
+.pnpm-store/
+.pnpm-debug.log*
+
+# Next.js
+.next/
+out/
+next-env.d.ts
+
+# Сборка и TypeScript
+build/
+dist/
+*.tsbuildinfo
+
+# Тесты и покрытие
+coverage/
+test-results/
+playwright-report/
+playwright/.cache/
+
+# Секреты и переменные окружения (ADR-0001: секретов в репозитории нет)
+.env
+.env.*
+!.env.example
+
+# Данные брендов: в репозитории только пример (ADR-0001, раздел 3)
+data/*.json
+!data/brands.sample.json
+
+# Локальная база PostgreSQL и дампы
+.pgdata/
+pgdata/
+*.dump
+*.sql.gz
+
+# Логи
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Хостинг-платформы
+.vercel/
+
+# Редакторы и IDE
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+
+# macOS и Windows
+.DS_Store
+._*
+Thumbs.db

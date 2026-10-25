@@ -51,10 +51,10 @@ describe("ссылки в магазины", () => {
   it("счётчик не считает ботов и переходы без нашего Referer", () => {
     const h = (o: Record<string, string>) => new Headers(o);
     const ua = "Mozilla/5.0 (Macintosh) Safari/605";
-    expect(isCountable(h({ "user-agent": ua, referer: "https://sovpalo.ru/brands/x/" }), "sovpalo.ru")).toBe(true);
-    expect(isCountable(h({ "user-agent": "YandexBot/3.0", referer: "https://sovpalo.ru/" }), "sovpalo.ru")).toBe(false);
-    expect(isCountable(h({ "user-agent": ua }), "sovpalo.ru")).toBe(false);
-    expect(isCountable(h({ "user-agent": ua, referer: "https://evil.ru/" }), "sovpalo.ru")).toBe(false);
+    expect(isCountable(h({ "user-agent": ua, referer: "https://sovpalo.net/brands/x/" }), "sovpalo.net")).toBe(true);
+    expect(isCountable(h({ "user-agent": "YandexBot/3.0", referer: "https://sovpalo.net/" }), "sovpalo.net")).toBe(false);
+    expect(isCountable(h({ "user-agent": ua }), "sovpalo.net")).toBe(false);
+    expect(isCountable(h({ "user-agent": ua, referer: "https://evil.ru/" }), "sovpalo.net")).toBe(false);
   });
 });
 

@@ -1,0 +1,13 @@
+.git
+.github
+.next
+node_modules
+coverage
+docs
+data/*.json
+!data/brands.sample.json
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
+.DS_Store

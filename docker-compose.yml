@@ -1,0 +1,20 @@
+# База для локальной разработки. Prod и staging описываются отдельно, вместе с выбором хостинга.
+services:
+  postgres:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: sovpalo
+      POSTGRES_PASSWORD: sovpalo
+      POSTGRES_DB: sovpalo
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sovpalo -d sovpalo"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+volumes:
+  pgdata:

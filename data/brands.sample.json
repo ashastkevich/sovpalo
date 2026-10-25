@@ -1,0 +1,50 @@
+{
+  "$schema": "../schemas/brands.schema.json",
+  "schema_version": "1.0",
+  "exported_at": "2026-10-25T00:00:00Z",
+  "source": "Пример для разработки и staging: бренды и ссылки вымышленные",
+  "brands": [
+    {
+      "id": "primer-kotiki",
+      "name": "Пример: Котики",
+      "city": "Казань",
+      "taste": { "styles": ["Стритвир"], "themes": ["Животные", "Юмор и мемы"], "decor": ["Графический принт", "Надпись"] },
+      "originality": { "kind": "original", "license_confirmed": false, "license_holder": null },
+      "maker": { "type": "Художник или студия", "made_in": "Казань, своя печать", "run": "Лимитированные дропы", "print": ["Шелкография"], "values": ["Работа с художниками"] },
+      "price": { "from": 2490, "to": 3290 },
+      "fit": { "cut": ["Оверсайз"], "text": "Оверсайз, унисекс", "sizes": "S–XL", "neck": null },
+      "fabric": { "gsm": 240, "gsm_to": null, "composition": "100% хлопок, кулирная гладь", "cotton100": true },
+      "texts": { "description": "Футболки с котами, которые спорят о космосе, и надписями про понедельник.", "story": "Вымышленный бренд для проверки каталога." },
+      "buy": { "site": "https://example.com/kotiki", "wildberries": null, "ozon": "https://example.com/ozon/kotiki", "yandex_market": null, "lamoda": null, "telegram": "https://t.me/example_kotiki", "vk": null, "multibrand": null, "offline": null, "sells_in_social": false },
+      "data": { "source": "example", "checked": "2026-10-25", "notion_id": null }
+    },
+    {
+      "id": "primer-sever",
+      "name": "Пример: Северный ветер",
+      "city": "Архангельск",
+      "taste": { "styles": ["Минимализм"], "themes": ["Город и местная идентичность", "Природа"], "decor": ["Вышивка"] },
+      "originality": { "kind": "original", "license_confirmed": false, "license_holder": null },
+      "maker": { "type": "Бренд со своим производством", "made_in": "Архангельск", "run": "Постоянная линейка", "print": ["Вышивка"], "values": ["Местное производство"] },
+      "price": { "from": 3900, "to": null },
+      "fit": { "cut": ["Прямой"], "text": "Прямой крой", "sizes": "XS–XXL", "neck": "Круглый ворот" },
+      "fabric": { "gsm": 200, "gsm_to": null, "composition": "95% хлопок, 5% эластан", "cotton100": false },
+      "texts": { "description": "Вышивка с маяками, чайками и картами северных городов.", "story": null },
+      "buy": { "site": "https://example.com/sever", "wildberries": null, "ozon": null, "yandex_market": null, "lamoda": null, "telegram": null, "vk": "https://vk.com/example_sever", "multibrand": { "name": "Пример-маркет", "url": "https://example.com/market/sever" }, "offline": "Архангельск, набережная, 1", "sells_in_social": false },
+      "data": { "source": "example", "checked": "2026-10-25", "notion_id": null }
+    },
+    {
+      "id": "primer-retro",
+      "name": "Пример: Ретроволна",
+      "city": null,
+      "taste": { "styles": ["Винтаж"], "themes": ["Ретро и Y2K", "Музыка"], "decor": ["Графический принт"] },
+      "originality": { "kind": null, "license_confirmed": false, "license_holder": null },
+      "maker": { "type": null, "made_in": null, "run": null, "print": [], "values": [] },
+      "price": { "from": 1990, "to": 2490 },
+      "fit": { "cut": [], "text": null, "sizes": null, "neck": null },
+      "fabric": { "gsm": null, "gsm_to": null, "composition": null, "cotton100": null },
+      "texts": { "description": "Кассеты, магнитофоны и шрифты из девяностых.", "story": null },
+      "buy": { "site": null, "wildberries": "https://example.com/wb/retro", "ozon": null, "yandex_market": null, "lamoda": null, "telegram": "https://t.me/example_retro", "vk": null, "multibrand": null, "offline": true, "sells_in_social": true },
+      "data": { "source": "example", "checked": null, "notion_id": null }
+    }
+  ]
+}

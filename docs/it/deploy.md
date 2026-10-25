@@ -12,9 +12,9 @@
 
 | Файл | Откуда |
 |---|---|
-| `compose.yml`, `deploy.sh` | Из `deploy/` в репозитории, обновляются при каждой выкатке |
+| `compose.yml`, `deploy.sh`, `backup.sh` | Из `deploy/` в репозитории, обновляются при каждой выкатке |
 | `nginx/proxy.inc`, `nginx/https.conf.example` | Так же |
-| `nginx/default.conf` | Живёт на сервере: сначала HTTP, после выпуска сертификата — HTTPS |
+| `nginx/default.conf` | Живёт на сервере, копия `https.conf.example`. До сертификата был HTTP-вариант из `deploy/nginx/default.conf` |
 | `.env` | Только на сервере: пароль базы, `SITE_URL`, `SITE_INDEXING`, `SITE_STAGE` |
 | `data/` | Файлы брендов для импорта |
 | `.image-tag` | Какой образ сейчас выкачен |
@@ -60,17 +60,37 @@ docker compose logs -f --tail=100 app
 
 ## HTTPS
 
-Пока домен `sovpalo.net` не смотрит на сервер (сейчас A-запись — парковка reg.ru, 31.31.198.113), сайт отдаётся по HTTP на IP сервера. После переключения A-записей `sovpalo.net` и `www.sovpalo.net` на `89.108.70.209`:
+Сертификат Let's Encrypt на `sovpalo.net` и `www.sovpalo.net` выпущен 25.10.2026, без почты для уведомлений. `nginx/default.conf` на сервере — копия `https.conf.example`: http и `www` перенаправляются на `https://sovpalo.net`.
+
+Продление: systemd-таймер `sovpalo-certbot.timer` дважды в сутки запускает `docker compose run --rm certbot renew` и перезагружает nginx. Проверить:
+
+```bash
+systemctl list-timers sovpalo-certbot.timer
+journalctl -u sovpalo-certbot.service -n 20
+```
+
+Выпуск заново (новый сервер или новый домен):
 
 ```bash
 docker compose run --rm certbot certonly --webroot -w /var/www/certbot \
-  -d sovpalo.net -d www.sovpalo.net --email <почта> --agree-tos -n
+  -d sovpalo.net -d www.sovpalo.net --register-unsafely-without-email --agree-tos -n
 cp nginx/https.conf.example nginx/default.conf
 docker compose exec nginx nginx -s reload
 ```
 
-Продление — `docker compose run --rm certbot renew` и перезагрузка nginx по расписанию; настраивается вместе с выпуском сертификата.
-
 ## Бэкап
 
-По ADR — ежедневный `pg_dump` в S3-совместимое хранилище вне сервера. Ещё не настроен: нужно выбрать и создать хранилище.
+Каждую ночь в 03:30 по Москве таймер `sovpalo-backup.timer` запускает `backup.sh`: `pg_dump` из контейнера в `/var/backups/sovpalo`, проверка архива через `pg_restore --list`, ротация — 7 ежедневных, 8 еженедельных (воскресенье) и 12 ежемесячных (1-е число) копий. Дамп с 64 брендами весит около 80 КБ.
+
+Копии лежат на диске сервера, поэтому снимки VPS reg.ru каждый раз содержат и согласованный дамп. Снимок возвращает весь сервер, дамп — базу или отдельную таблицу. От потери аккаунта или проблем у reg.ru это не спасает: внешнее хранилище (S3 у другого провайдера, например Yandex Object Storage) добавим, когда в базе появятся данные, которые жалко потерять, — переходы, анкеты брендов.
+
+Проверить и восстановить:
+
+```bash
+journalctl -u sovpalo-backup.service -n 5
+ls -lh /var/backups/sovpalo/daily
+# В отдельную базу, чтобы посмотреть или достать таблицу
+docker compose exec -T postgres sh -c 'createdb -U $POSTGRES_USER restore_test && pg_restore -U $POSTGRES_USER -d restore_test --no-owner' < /var/backups/sovpalo/daily/<файл>.dump
+# Целиком поверх рабочей базы (сайт на это время лучше остановить: docker compose stop app)
+docker compose exec -T postgres sh -c 'pg_restore -U $POSTGRES_USER -d $POSTGRES_DB --clean --if-exists --no-owner' < /var/backups/sovpalo/daily/<файл>.dump
+```

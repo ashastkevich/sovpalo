@@ -92,7 +92,7 @@ jobs:
           set -euo pipefail
           ssh_() { ssh -i ~/.ssh/deploy -o BatchMode=yes "$TARGET" "$@"; }
           # Файлы стека из репозитория; nginx/default.conf живёт на сервере (docs/it/deploy.md)
-          scp -i ~/.ssh/deploy -o BatchMode=yes deploy/compose.yml deploy/deploy.sh "$TARGET":/srv/sovpalo/
+          scp -i ~/.ssh/deploy -o BatchMode=yes deploy/compose.yml deploy/deploy.sh deploy/backup.sh "$TARGET":/srv/sovpalo/
           scp -i ~/.ssh/deploy -o BatchMode=yes deploy/nginx/proxy.inc deploy/nginx/https.conf.example "$TARGET":/srv/sovpalo/nginx/
           # Токен живёт только пока идёт этот запуск
           printf '%s' "$TOKEN" | ssh_ docker login ghcr.io -u "${{ github.actor }}" --password-stdin

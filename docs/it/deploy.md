@@ -15,7 +15,7 @@
 | `compose.yml`, `deploy.sh`, `backup.sh` | Из `deploy/` в репозитории, обновляются при каждой выкатке |
 | `nginx/proxy.inc`, `nginx/https.conf.example` | Так же |
 | `nginx/default.conf` | Живёт на сервере, копия `https.conf.example`. До сертификата был HTTP-вариант из `deploy/nginx/default.conf` |
-| `.env` | Только на сервере: пароль базы, `SITE_URL`, `SITE_INDEXING`, `SITE_STAGE` |
+| `.env` | Только на сервере: пароль базы, `SITE_URL`, `SITE_INDEXING`, `SITE_STAGE`, `METRIKA_ID`, `POLICY_URL` |
 | `data/` | Файлы брендов для импорта |
 | `.image-tag` | Какой образ сейчас выкачен |
 

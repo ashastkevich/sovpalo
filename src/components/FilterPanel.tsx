@@ -33,6 +33,10 @@ export function FilterPanel(props: { action: string; facets: CatalogFacets; filt
       <AutoSubmit />
       <input type="hidden" name={PARAM.seed} value={seed} />
       {campaign && <input type="hidden" name={PARAM.campaign} value={campaign} />}
+      <div className="filter-title">
+        <span className="eyebrow">Подбор</span>
+        <h2>Фильтры</h2>
+      </div>
       <div className="group">
         <label className="label" htmlFor="f-q">
           Поиск

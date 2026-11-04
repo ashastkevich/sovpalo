@@ -5,6 +5,7 @@ import { siteUrl } from "@/lib/env";
 import { catalogFacets, listCatalog } from "@/server/services/brands";
 import { BrandGrid } from "./BrandCard";
 import { FilterPanel } from "./FilterPanel";
+import { HeroMatch } from "./HeroMatch";
 import { JsonLd } from "./JsonLd";
 import { SLOGAN_COUNT, Slogan } from "./Slogan";
 
@@ -29,33 +30,43 @@ export async function CatalogView({ searchParams, landing }: { searchParams: Pro
 
   return (
     <>
-      <section className="wrap hero">
-        {landing ? (
-          <>
-            <h1 className="slogan">
-              <span>{landing.title}</span>
-            </h1>
-            <p className="sub">{landing.text}</p>
-          </>
-        ) : (
-          <>
-            <Slogan index={seedIndex(seed)} />
-            <p className="sub">Каталог независимых брендов футболок. Отберите бренды фильтрами и купите там, где вам удобно.</p>
-          </>
-        )}
+      <section className={`wrap hero${landing ? " landing" : ""}`}>
+        <div className="hero-copy">
+          {landing ? (
+            <>
+              <span className="eyebrow">Тема принтов</span>
+              <h1 className="slogan">
+                <span>{landing.title}</span>
+              </h1>
+              <p className="sub">{landing.text}</p>
+            </>
+          ) : (
+            <>
+              <span className="eyebrow">Каталог независимых брендов</span>
+              <Slogan index={seedIndex(seed)} />
+              <p className="sub">Каталог независимых брендов футболок. Отберите бренды фильтрами и купите там, где вам удобно.</p>
+            </>
+          )}
+        </div>
+        <HeroMatch />
       </section>
       <div className="wrap layout">
         <FilterPanel key={JSON.stringify(filters)} action="/" facets={facets} filters={filters} seed={seed} campaign={campaign} />
         <section className="results" id="results" aria-live="polite">
           <div className="rhead">
-            <h2>{brandsCount(brands.length)}</h2>
+            <div>
+              <span className="eyebrow">Найдите совпадение</span>
+              <h2>{brandsCount(brands.length)}</h2>
+            </div>
             <span className="mono">Порядок меняется для каждого посетителя</span>
           </div>
           {brands.length ? (
             <BrandGrid brands={brands} from={from} campaign={campaign} />
           ) : (
             <div className="empty">
-              <b>Под эти фильтры брендов нет.</b>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/symbol.svg" alt="" width="64" height="61" />
+              <b>Пока не совпало.</b>
               <p className="hint">
                 {filters.q ? "Попробуйте другое слово или сбросьте фильтры." : "Снимите фильтр по ткани или посадке: эти данные есть не у всех брендов."}
               </p>
@@ -78,21 +89,26 @@ export async function CatalogView({ searchParams, landing }: { searchParams: Pro
 /** Блок «Как устроен каталог» под выдачей */
 export function HowBlock() {
   return (
-    <section className="wrap how" aria-label="Как устроен каталог">
-      <div>
-        <h3>Почему порядок случайный</h3>
-        <p>Чтобы ни один бренд не стоял первым всегда. Фильтры только убирают бренды из списка, поднять бренд выше нельзя.</p>
-      </div>
-      <div>
-        <h3>Откуда данные</h3>
-        <p>Сайты брендов, магазины, Lamoda, Яндекс Маркет и медиа. Если чего-то о бренде не нашли, этот пункт не показываем.</p>
-      </div>
-      <div>
-        <h3>Обложки и метки</h3>
-        <p>
-          Обложки — макеты каталога: футболку и рисунок рисуем мы по описанию бренда, это не модели брендов. Метка вроде «Авторский
-          дизайн» передаёт, что заявил бренд или медиа; по изображениям её ещё не проверяли.
-        </p>
+    <section className="how" aria-label="Как устроен каталог">
+      <div className="wrap how-grid">
+        <div>
+          <span className="how-index">01</span>
+          <h3>Почему порядок случайный</h3>
+          <p>Чтобы ни один бренд не стоял первым всегда. Фильтры только убирают бренды из списка, поднять бренд выше нельзя.</p>
+        </div>
+        <div>
+          <span className="how-index">02</span>
+          <h3>Откуда данные</h3>
+          <p>Сайты брендов, магазины, Lamoda, Яндекс Маркет и медиа. Если чего-то о бренде не нашли, этот пункт не показываем.</p>
+        </div>
+        <div>
+          <span className="how-index">03</span>
+          <h3>Обложки и метки</h3>
+          <p>
+            Обложки — макеты каталога: футболку и рисунок рисуем мы по описанию бренда, это не модели брендов. Метка вроде «Авторский
+            дизайн» передаёт, что заявил бренд или медиа; по изображениям её ещё не проверяли.
+          </p>
+        </div>
       </div>
     </section>
   );

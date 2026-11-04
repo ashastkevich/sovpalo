@@ -1,8 +1,22 @@
 import type { Metadata, Viewport } from "next";
+import { Manrope, Unbounded } from "next/font/google";
 import Link from "next/link";
 import { Suspense } from "react";
+import { Analytics, CookieSettings } from "@/components/Analytics";
 import { PreviewStrip } from "@/components/PreviewStrip";
 import "./globals.css";
+
+const manrope = Manrope({
+  subsets: ["latin", "cyrillic"],
+  variable: "--font-manrope",
+  display: "swap",
+});
+
+const unbounded = Unbounded({
+  subsets: ["latin", "cyrillic"],
+  variable: "--font-unbounded",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   // Для относительных canonical и Open Graph на статических страницах; значение берётся при сборке
@@ -10,6 +24,7 @@ export const metadata: Metadata = {
   title: { default: "Совпало — независимые бренды футболок", template: "%s · Совпало" },
   description: "Каталог российских брендов футболок с авторским дизайном. Все бренды на одних условиях, порядок случайный, место купить нельзя.",
   applicationName: "Совпало",
+  icons: { icon: "/favicon.ico" },
   openGraph: { siteName: "Совпало", locale: "ru_RU", type: "website" },
 };
 
@@ -17,25 +32,22 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  colorScheme: "light dark",
+  colorScheme: "light",
 };
 
 function Logo() {
   return (
     <Link className="logo" href="/" aria-label="Совпало, на главную">
-      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
-        <circle cx="13" cy="13" r="7.5" fill="none" stroke="currentColor" strokeWidth="2" />
-        <path d="M13 1v24M1 13h24" stroke="currentColor" strokeWidth="2" />
-        <circle cx="13" cy="13" r="2.5" fill="currentColor" />
-      </svg>
-      <b>Совпало</b>
+      {/* Локальный SVG: векторному логотипу оптимизация растровых изображений не нужна */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/logo.svg" alt="Совпало" width="1286" height="246" />
     </Link>
   );
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ru">
+    <html lang="ru" className={`${manrope.variable} ${unbounded.variable}`}>
       <body>
         <Suspense fallback={null}>
           <PreviewStrip />
@@ -52,9 +64,19 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <main>{children}</main>
         <footer className="foot">
           <div className="wrap">
+            <div className="foot-brand" aria-label="Совпало">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo-dark.svg" alt="" width="1286" height="246" />
+            </div>
             <span>Совпало · данные из открытых источников, дата проверки — на странице бренда</span>
+            <Suspense fallback={null}>
+              <CookieSettings />
+            </Suspense>
           </div>
         </footer>
+        <Suspense fallback={null}>
+          <Analytics />
+        </Suspense>
       </body>
     </html>
   );

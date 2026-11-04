@@ -11,6 +11,10 @@ const schema = z.object({
     .transform((v) => v === "true"),
   /** preview — полоса «Предпросмотр каталога» и блок «Это ваш бренд?» (FR-9, FR-16) */
   SITE_STAGE: z.enum(["preview", "open"]).default("preview"),
+  /** Номер счётчика Яндекс Метрики; без него счётчика и баннера cookie нет (FR-29) */
+  METRIKA_ID: z.coerce.number().int().positive().optional(),
+  /** Ссылка на политику обработки данных в баннере cookie (NFR-5) */
+  POLICY_URL: z.string().url().optional(),
 });
 
 export type Env = z.infer<typeof schema>;

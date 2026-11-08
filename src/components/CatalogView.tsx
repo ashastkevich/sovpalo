@@ -51,7 +51,7 @@ export async function CatalogView({ searchParams, landing }: { searchParams: Pro
         <HeroMatch />
       </section>
       <div className="wrap layout">
-        <FilterPanel key={JSON.stringify(filters)} action="/" facets={facets} filters={filters} seed={seed} campaign={campaign} />
+        <FilterPanel action="/" facets={facets} filters={filters} seed={seed} campaign={campaign} />
         <section className="results" id="results" aria-live="polite">
           <div className="rhead">
             <div>

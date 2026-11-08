@@ -4,7 +4,7 @@ import { type ReactNode, useEffect, useRef } from "react";
 
 const DESKTOP = "(min-width: 861px)";
 
-// Панель пересоздаётся после каждого применённого фильтра (key в FilterPanel), а раскрытие должно сохраниться
+// Сохраняем выбор пользователя между обновлениями серверных props.
 let openOnMobile = false;
 
 /**
